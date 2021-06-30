@@ -19,27 +19,28 @@ public class HibernateUtil {
                 Configuration configuration = new Configuration();
 
                 Properties settings = new Properties();
-                settings.put(Environment.DRIVER, "com.mysql.jdbc.Driver");
+                settings.put(Environment.DRIVER, "com.mysql.cj.jdbc.Driver");
                 settings.put(Environment.URL, "jdbc:mysql://localhost:3306/she_goes_tech?serverTimezone=UTC");
                 settings.put(Environment.USER, "root");
                 settings.put(Environment.PASS, "password");
-                settings.put(Environment.DIALECT, "org.hibernate.dialect.MySQL5Dialect");
+                settings.put(Environment.DIALECT, "org.hibernate.dialect.MySQL8Dialect");
                 settings.put(Environment.SHOW_SQL, true);
 
                 //you may change this per project
-                settings.put(Environment.HBM2DDL_AUTO, "create");
+                settings.put(Environment.HBM2DDL_AUTO, "update");
                 /** validate, update, create, create-drop, none
                  *
                  *  validate - ensures that the configuration you've declared is valid (i.e schema is correct).
-                 *  This option does not perform any update in the database
+                 *  This option does not perform any update in the database -
                  *
-                 *  update - updates the schema but does not destroy the previous data
+                 *  update - updates the schema but does not destroy the previous data -  ALTER
                  *
-                 *  create - creates the schema, destroy previous data
+                 *  create - creates the schema, destroy previous data -  DROP - CREATE
+                 *
                  *
                  *  create-drop -  creates the schema when the sessionFactory is opened and drop the schema when the SessionFactory is closed
-                 *  (i.e when the application is stopped).
-                 *  none -  this does nothing
+                 *  (i.e when the application is stopped). -  DROP - CREATE - DROP
+                 *  none -  this does nothing -
                  */
 
                 configuration.setProperties(settings);
@@ -47,9 +48,39 @@ public class HibernateUtil {
                 //add more annotated classes
 
                 ServiceRegistry serviceRegistry = new StandardServiceRegistryBuilder()
-                        .applySettings(configuration.getProperties()).build();
+                        .applySettings(configuration.getProperties())
+                        .build();
 
                 sessionFactory = configuration.buildSessionFactory(serviceRegistry);
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+
+        }
+        return sessionFactory;
+    }
+
+    public static SessionFactory getSessionFactoryWithXMLConfig() {
+        if (sessionFactory == null) {
+            try {
+                sessionFactory = new Configuration()
+                        .configure("hibernate.cfg.xml")
+                        .addAnnotatedClass(Person.class)
+                        .buildSessionFactory();
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        }
+        return sessionFactory;
+    }
+
+    public static SessionFactory getSessionFactoryWithXML() {
+        if (sessionFactory == null) {
+            try {
+                sessionFactory = new Configuration()
+                        .addAnnotatedClass(Person.class)
+                        .configure("hibernate.cfg.xml")
+                        .buildSessionFactory();
             } catch (Exception e) {
                 e.printStackTrace();
             }

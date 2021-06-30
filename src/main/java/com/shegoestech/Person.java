@@ -15,8 +15,10 @@ public class Person {
     @Column(unique = true)
     private String email;
     private String country;
+    @Column(name = "phone_number")
+    private String phoneNumber;
 
-    public Person(){
+    public Person() {
     }
 
     public Person(String firstName, String lastName, String email, String country) {

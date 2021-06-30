@@ -1,18 +1,13 @@
 package com.shegoestech;
 
-public class Main {
-    /**
-     * DTO - Data Transfer Object -  POJO (Plain Old Java Object)
-     * DAO -  Data Access Object -  Accessing data from database/datasource
-     */
+public class MainWithXML {
     public static void main(String[] args) throws Exception {
-        PersonDao personDao = new PersonDao();
-//        PersonDaoXml personDao = new PersonDaoXml();
-//        createExample(personDao);
-        updateExample(personDao);
+        PersonDaoWithXML personDao = new PersonDaoWithXML();
+        createExample(personDao);
+//        updateExample(personDao);
     }
 
-    private static void updateExample(PersonDao personDao) throws Exception {
+    private static void updateExample(PersonDaoWithXML personDao) throws Exception {
         Person laura = personDao.findByIdOrReturnNull(1L);
         if (laura == null) {
             laura = new Person("Laura", "Zveja", "laura.zveja@gmail.com", "Latvia");
@@ -27,7 +22,7 @@ public class Main {
         System.out.println("-----------------------------------------------------------------------");
     }
 
-    private static void createExample(PersonDao personDao) throws Exception {
+    private static void createExample(PersonDaoWithXML personDao) throws Exception {
 
         /***
          *

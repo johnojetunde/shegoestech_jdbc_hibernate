@@ -3,12 +3,12 @@ package com.shegoestech;
 import org.hibernate.Session;
 import org.hibernate.Transaction;
 
-public class PersonDao {
+public class PersonDaoWithXML {
 
     public void savePerson(Person person) {
         Transaction transaction = null;
         try {
-            Session session = HibernateUtil.getSessionFactory().openSession();
+            Session session = HibernateUtil.getSessionFactoryWithXMLConfig().openSession();
             transaction = session.beginTransaction();
             session.save(person);
             transaction.commit();
@@ -21,7 +21,7 @@ public class PersonDao {
     }
 
     public Person findById(Long id) throws Exception {
-        Session session = HibernateUtil.getSessionFactory().openSession();
+        Session session = HibernateUtil.getSessionFactoryWithXMLConfig().openSession();
         Person person = session.find(Person.class, id);
         if (person == null) {
             throw new Exception("Person with id " + id + " does not exist");
@@ -30,14 +30,14 @@ public class PersonDao {
     }
 
     public Person findByIdOrReturnNull(Long id) throws Exception {
-        Session session = HibernateUtil.getSessionFactory().openSession();
+        Session session = HibernateUtil.getSessionFactoryWithXMLConfig().openSession();
         return session.find(Person.class, id);
     }
 
     public void delete(Person person) {
         Transaction transaction = null;
         try {
-            Session session = HibernateUtil.getSessionFactory().openSession();
+            Session session = HibernateUtil.getSessionFactoryWithXMLConfig().openSession();
             transaction = session.beginTransaction();
             session.delete(person);
 
@@ -53,7 +53,7 @@ public class PersonDao {
     public void update(Person person) {
         Transaction transaction = null;
         try {
-            Session session = HibernateUtil.getSessionFactory().openSession();
+            Session session = HibernateUtil.getSessionFactoryWithXMLConfig().openSession();
             transaction = session.beginTransaction();
             session.update(person);
 
