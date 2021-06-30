@@ -1,7 +1,12 @@
 package com.shegoestech;
 
 import org.hibernate.Session;
+import org.hibernate.SessionFactory;
 import org.hibernate.Transaction;
+
+import javax.persistence.EntityManager;
+import javax.persistence.TypedQuery;
+import java.util.List;
 
 public class PersonDao {
 
@@ -27,6 +32,16 @@ public class PersonDao {
             throw new Exception("Person with id " + id + " does not exist");
         }
         return person;
+    }
+
+    public List<Person> findByName(String name) throws Exception {
+        SessionFactory factory = HibernateUtil.getSessionFactory();
+        EntityManager em = factory.createEntityManager();
+
+        TypedQuery<Person> query = em.createQuery("Select p from Person p where p.firstName=:name or p.lastName = :name", Person.class);
+        query.setParameter("name", name);
+
+        return query.getResultList();
     }
 
     public Person findByIdOrReturnNull(Long id) throws Exception {

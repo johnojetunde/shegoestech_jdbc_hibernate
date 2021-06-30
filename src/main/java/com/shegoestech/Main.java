@@ -1,5 +1,7 @@
 package com.shegoestech;
 
+import java.util.List;
+
 public class Main {
     /**
      * DTO - Data Transfer Object -  POJO (Plain Old Java Object)
@@ -7,9 +9,9 @@ public class Main {
      */
     public static void main(String[] args) throws Exception {
         PersonDao personDao = new PersonDao();
-//        PersonDaoXml personDao = new PersonDaoXml();
-//        createExample(personDao);
-        updateExample(personDao);
+//       PersonDaoXml personDao = new PersonDaoXml();
+        createExample(personDao);
+//        updateExample(personDao);
     }
 
     private static void updateExample(PersonDao personDao) throws Exception {
@@ -58,9 +60,11 @@ public class Main {
          */
         Person laura = new Person("Laura", "Zveja", "laura.zveja@gmail.com", "Latvia");
         Person angelica = new Person("Angelica", "Gorbaca", "angelica.gorbaca@gmail.com", "Latvia/Cyprus");
+        Person angelicaJnr = new Person("Anzelika", "Gorbaca", "anzelika.gorbaca@gmail.com", "Latvia/Cyprus");
 
         personDao.savePerson(laura);
         personDao.savePerson(angelica);
+        personDao.savePerson(angelicaJnr);
 
         System.out.println("-----------------------------------------------------------------------");
         System.out.println(personDao.findById(2L));
@@ -76,12 +80,16 @@ public class Main {
         //Person isLauraStillThere = personDao.findById(1L);
         //System.out.println(isLauraStillThere);
 
+        List<Person> results = personDao.findByName("Gorbaca");
+        System.out.println("------- finding by name Gorbaca --------------------------");
+        System.out.println(results);
+        System.out.println("-----------------------------------------------------------------------");
 
 
         ProductDAO productDAO = new ProductDAO();
 
-        Product milk = new Product("Soy milk", 1.90,"Dairy free", 46);
-        Product chocolate = new Product("Kinder Surprise", 0.99,"Milk and white chocolate egg", 150);
+        Product milk = new Product("Soy milk", 1.90, "Dairy free", 46);
+        Product chocolate = new Product("Kinder Surprise", 0.99, "Milk and white chocolate egg", 150);
 
         productDAO.saveProduct(milk);
         productDAO.saveProduct(chocolate);
