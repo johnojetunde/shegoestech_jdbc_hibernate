@@ -4,7 +4,7 @@ public class MainWithXML {
     public static void main(String[] args) throws Exception {
         PersonDaoWithXML personDao = new PersonDaoWithXML();
         createExample(personDao);
-//        updateExample(personDao);
+        //updateExample(personDao);
     }
 
     private static void updateExample(PersonDaoWithXML personDao) throws Exception {

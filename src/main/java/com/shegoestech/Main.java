@@ -73,7 +73,28 @@ public class Main {
         Person dbLaura = personDao.findById(1L);
         personDao.delete(dbLaura);
 
-        Person isLauraStillThere = personDao.findById(1L);
-        System.out.println(isLauraStillThere);
+        //Person isLauraStillThere = personDao.findById(1L);
+        //System.out.println(isLauraStillThere);
+
+
+
+        ProductDAO productDAO = new ProductDAO();
+
+        Product milk = new Product("Soy milk", 1.90,"Dairy free", 46);
+        Product chocolate = new Product("Kinder Surprise", 0.99,"Milk and white chocolate egg", 150);
+
+        productDAO.saveProduct(milk);
+        productDAO.saveProduct(chocolate);
+
+        productDAO.delete(chocolate);
+
+        System.out.println("-----------------------------------------------------------------------");
+        System.out.println(productDAO.findById(1L));
+
+        milk.setCalories(55);
+        productDAO.update(milk);
+
+        System.out.println("-----------------------------------------------------------------------");
+        System.out.println(productDAO.findById(1L));
     }
 }
