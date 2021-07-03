@@ -8,7 +8,7 @@ public class Main {
      * DAO -  Data Access Object -  Accessing data from database/datasource
      */
     public static void main(String[] args) throws Exception {
-        PersonDao personDao = new PersonDao();
+        PersonDao personDao = new PersonDao(HibernateUtil.getSessionFactory());
 //       PersonDaoXml personDao = new PersonDaoXml();
         createExample(personDao);
 //        updateExample(personDao);
@@ -105,4 +105,12 @@ public class Main {
         System.out.println("-----------------------------------------------------------------------");
         System.out.println(productDAO.findById(1L));
     }
+
+    /**
+     * /products -  GET -  get all product
+     * /products/{id} -  GET -  get byt id
+     * /products -  POST -  create product
+     *
+     *
+     * */
 }
