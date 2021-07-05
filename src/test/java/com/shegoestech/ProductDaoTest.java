@@ -5,18 +5,22 @@ import org.hibernate.SessionFactory;
 import org.hibernate.Transaction;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
-import org.mockito.junit.jupiter.MockitoExtension;
+import org.mockito.MockitoAnnotations;
+
+import javax.persistence.EntityManager;
+import javax.persistence.TypedQuery;
+import java.util.Collections;
+import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.fail;
-import static org.mockito.ArgumentMatchers.isA;
+import static org.mockito.ArgumentMatchers.*;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
-@ExtendWith(MockitoExtension.class)
+//@ExtendWith(MockitoExtension.class)
 public class ProductDaoTest {
     @Mock
     private SessionFactory sessionFactory;
@@ -24,11 +28,16 @@ public class ProductDaoTest {
     private Session session;
     @Mock
     private Transaction transaction;
+    @Mock
+    private EntityManager entityManager;
+    @Mock
+    private TypedQuery<Product> query;
     @InjectMocks
     private ProductDAO productDAO;
 
     @BeforeEach
     void setUp() {
+        MockitoAnnotations.initMocks(this);
         when(sessionFactory.openSession())
                 .thenReturn(session);
     }
@@ -37,7 +46,6 @@ public class ProductDaoTest {
     void saveProduct() {
         when(session.beginTransaction())
                 .thenReturn(transaction);
-
         when(session.save(isA(Product.class)))
                 .thenReturn("");
 
@@ -78,5 +86,32 @@ public class ProductDaoTest {
         }
 
         verify(session).find(Product.class, productId);
+    }
+
+    @Test
+    void findByName() throws Exception {
+        Long expectedId = 24L;
+        Product sampleProduct = new Product("Product", 2.0, "description", 10);
+        sampleProduct.setId(expectedId);
+
+        when(sessionFactory.createEntityManager())
+                .thenReturn(entityManager);
+        when(entityManager.createQuery(anyString(), eq(Product.class)))
+                .thenReturn(query);
+        when(query.setParameter("name", "product"))
+                .thenReturn(query);
+        when(query.getResultList())
+                .thenReturn(Collections.singletonList(sampleProduct));
+
+        List<Product> foundProduct = productDAO.findByName("product");
+
+        assertEquals(1, foundProduct.size());
+        assertEquals(expectedId, foundProduct.get(0).getId());
+        assertEquals("Product", foundProduct.get(0).getName());
+
+        verify(sessionFactory).createEntityManager();
+        verify(entityManager).createQuery(anyString(), eq(Product.class));
+        verify(query).setParameter("name", "product");
+        verify(query).getResultList();
     }
 }

@@ -4,6 +4,10 @@ import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.hibernate.Transaction;
 
+import javax.persistence.EntityManager;
+import javax.persistence.TypedQuery;
+import java.util.List;
+
 public class ProductDAO {
     private final SessionFactory sessionFactory;
 
@@ -65,6 +69,15 @@ public class ProductDAO {
             }
             e.printStackTrace();
         }
+    }
+
+    public List<Product> findByName(String name) throws Exception {
+        EntityManager em = sessionFactory.createEntityManager();
+
+        TypedQuery<Product> query = em.createQuery("Select p from Product p where p.name=:name ", Product.class);
+        query.setParameter("name", name);
+
+        return query.getResultList();
     }
 }
 
