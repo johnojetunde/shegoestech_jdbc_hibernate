@@ -27,7 +27,7 @@ public class HibernateUtil {
                 settings.put(Environment.SHOW_SQL, true);
 
                 //you may change this per project
-                settings.put(Environment.HBM2DDL_AUTO, "update");
+                settings.put(Environment.HBM2DDL_AUTO, "create");
                 /** validate, update, create, create-drop, none
                  *
                  *  validate - ensures that the configuration you've declared is valid (i.e schema is correct).

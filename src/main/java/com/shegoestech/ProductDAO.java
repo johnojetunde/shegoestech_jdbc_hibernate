@@ -1,14 +1,20 @@
 package com.shegoestech;
 
 import org.hibernate.Session;
+import org.hibernate.SessionFactory;
 import org.hibernate.Transaction;
 
 public class ProductDAO {
+    private final SessionFactory sessionFactory;
+
+    public ProductDAO(SessionFactory sessionFactory) {
+        this.sessionFactory = sessionFactory;
+    }
 
     public void saveProduct(Product product) {
         Transaction transaction = null;
         try {
-            Session session = HibernateUtil.getSessionFactory().openSession();
+            Session session = sessionFactory.openSession();
             transaction = session.beginTransaction();
             session.save(product);
             transaction.commit();
@@ -21,7 +27,7 @@ public class ProductDAO {
     }
 
     public Product findById(Long id) throws Exception {
-        Session session = HibernateUtil.getSessionFactory().openSession();
+        Session session = sessionFactory.openSession();
         Product product = session.find(Product.class, id);
         if (product == null) {
             throw new Exception("Product with id " + id + " does not exist");
@@ -32,7 +38,7 @@ public class ProductDAO {
     public void delete(Product product) {
         Transaction transaction = null;
         try {
-            Session session = HibernateUtil.getSessionFactory().openSession();
+            Session session = sessionFactory.openSession();
             transaction = session.beginTransaction();
             session.delete(product);
 
@@ -48,7 +54,7 @@ public class ProductDAO {
     public void update(Product product) {
         Transaction transaction = null;
         try {
-            Session session = HibernateUtil.getSessionFactory().openSession();
+            Session session = sessionFactory.openSession();
             transaction = session.beginTransaction();
             session.update(product);
 

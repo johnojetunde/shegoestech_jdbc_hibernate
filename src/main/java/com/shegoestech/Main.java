@@ -85,8 +85,7 @@ public class Main {
         System.out.println(results);
         System.out.println("-----------------------------------------------------------------------");
 
-
-        ProductDAO productDAO = new ProductDAO();
+        ProductDAO productDAO = new ProductDAO(HibernateUtil.getSessionFactory());
 
         Product milk = new Product("Soy milk", 1.90, "Dairy free", 46);
         Product chocolate = new Product("Kinder Surprise", 0.99, "Milk and white chocolate egg", 150);
